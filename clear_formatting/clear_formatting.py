@@ -1,7 +1,7 @@
 """A module providing a facade for clear formatting values into strings.
 Uses custom format types :class:`Fill`, :class:`Align`, :class:`Sign`, :class:`Alternate`, :class:`Width`,
-    :class:`Groping`, :class:`Precision`, :class:`Type` to build the standard format templates
-Uses standard string formatting methods inside
+:class:`Groping`, :class:`Precision`, :class:`Type` to build the standard format templates.
+Uses standard string formatting methods inside.
 """
 
 import abc
@@ -24,6 +24,9 @@ class Conversion(enum.Enum):
     Normally, the job of formatting a value is done by the __format__() method of the value itself. However, in some
     cases it is desirable to force a type to be formatted as a string, overriding its own definition of formatting.
     By converting the value to a string before calling __format__(), the normal formatting logic is bypassed.
+
+    For example, you would need conversion when trying to format a collection with some additional options. Normally,
+    lists cannot be formatted with these formats, but with conversion=Conversion.STR or REPR it will be possible.
 
     Available conversions:
 
@@ -320,7 +323,7 @@ class ValueFormatter:
         :return: formatting options template to be used with str.format() method
         """
 
-        conversion_template = conversion.value if conversion else ''
+        conversion_template = f'!{conversion.value}' if conversion else ''
         return f'{{{conversion_template}:{"".join(fmt.value for fmt in sorted_formats(formats))}}}'
 
     @staticmethod
@@ -337,3 +340,8 @@ class ValueFormatter:
 
         options = ValueFormatter.build_format_template(formats, conversion)
         return Formatter().format(options, value)
+
+
+if __name__ == '__main__':
+    li = [1, 2, 3, 4, 5]
+    print(ValueFormatter(Width(30), Fill('#'), conversion=Conversion.STR)(li))
