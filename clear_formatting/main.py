@@ -1,4 +1,4 @@
-"""A module containing main formatter class :class:`ValueFormatter`. See the class documentation for more info.
+"""A module containing a formatter class :class:`ValueFormatter`. See the class documentation for more info.
 """
 
 #  Copyright (c) 2022. Dmytro Popov
@@ -9,8 +9,13 @@ from typing import Any
 from clear_formatting.formats import *
 
 
-class FormatError(TypeError):
+class FormatTypeError(TypeError):
     """Raised when :class:`ValueFormatter` got instance of incorrect format type."""
+    pass
+
+
+class FormatDuplicateError(ValueError):
+    """Raised when :class:`ValueFormatter` got two or more instances of the same class"""
     pass
 
 
@@ -29,15 +34,24 @@ class ValueFormatter:
     See the methods' documentation for other abilities.
     """
 
-    formats: tuple[FormatBase | enum.Enum]
+    formats: tuple[FormatBase | EnumFormatBase]
     conversion: Conversion | None
 
-    def __init__(self: 'ValueFormatter', *formats: FormatBase | enum.Enum, conversion: Conversion = None):
+    def __init__(self: 'ValueFormatter', *formats: FormatBase | EnumFormatBase, conversion: Conversion = None):
+        types = set()
         for fmt in formats:
             if type(fmt) not in ORDERED_FORMATS:
-                raise FormatError('ValueFormatter cannot accept format {}. Expected formats are {}'.format(
+                raise FormatTypeError('ValueFormatter cannot accept format {}. Expected formats are {}'.format(
                     fmt.__class__.__name__, ', '.join(f.__name__ for f in ORDERED_FORMATS)
                 ))
+            if type(fmt) in types:
+                raise FormatDuplicateError(
+                    ('Format type {} was duplicated in ValueFormatter arguments (with index {}). The object cannot be '
+                     'initialized with duplicating formats').format(
+                        type(fmt).__name__, formats.index(fmt)
+                    ))
+            types.add(type(fmt))
+
         self.formats = formats
         self.conversion = conversion
 
@@ -45,7 +59,7 @@ class ValueFormatter:
         """The same as `format` method.
 
         :param value: a value to be formatted
-        :return: formatted value
+        :return: a formatted value
         """
 
         return self.format(value)
@@ -54,7 +68,7 @@ class ValueFormatter:
         """Returns the given value formatted with the format options applied during the initializing.
 
         :param value: a value to be formatted
-        :return: formatted value
+        :return: a formatted value
         """
 
         return self.format_value(self.formats, value, conversion=self.conversion)
@@ -62,7 +76,7 @@ class ValueFormatter:
     def build_template(self: 'ValueFormatter') -> str:
         """Returns a format template from the format options applied during the object initializing.
 
-        :return: formatting options template to be used with str.format() method
+        :return: a formatting options template to be used with str.format() method
         """
 
         return self.build_format_template(self.formats, self.conversion)
@@ -74,8 +88,8 @@ class ValueFormatter:
         from 'conversion'.
 
         :param formats: a list of formats to be used to build a format template
-        :param conversion: conversion option (optional)
-        :return: formatting options template to be used with str.format() method
+        :param conversion: a conversion option (optional)
+        :return: a formatting options template to be used with str.format() method
         """
 
         conversion_template = f'!{conversion.value}' if conversion else ''
@@ -89,8 +103,8 @@ class ValueFormatter:
 
         :param formats: a list of formats to be used to build a format template
         :param value: a value to be formatted
-        :param conversion: conversion option (optional)
-        :return: formatted value
+        :param conversion: a conversion option (optional)
+        :return: a formatted value
         """
 
         options = ValueFormatter.build_format_template(formats, conversion)

@@ -11,5 +11,5 @@ and `official string formatting documentation <https://docs.python.org/3/library
 
 #  Copyright (c) 2022. Dmytro Popov
 
-from clear_formatting.main import ValueFormatter, FormatError
+from clear_formatting.main import ValueFormatter, FormatTypeError
 from clear_formatting import formats

@@ -10,11 +10,15 @@ from typing import Collection
 
 class FormatBase(abc.ABC):
     """An abstract base class for non-enum format types for `ValueFormatter` class."""
-
     value: str
 
 
-class Conversion(enum.Enum):
+class EnumFormatBase(enum.Enum):
+    """A base class for enum format types for `ValueFormatter` class."""
+    pass
+
+
+class Conversion(EnumFormatBase):
     """Causes a type coercion before formatting.
 
     Is used with :class:`ValueFormatter` (..., conversion=Conversion.STR).
@@ -50,7 +54,7 @@ class Fill(FormatBase):
         self.value = char[0] if char else ''
 
 
-class Align(enum.Enum):
+class Align(EnumFormatBase):
     """Determines align options for number and string formatting. Available option descriptions:
 
     * **CENTER** - Forces the field to be **centered** within the available space.
@@ -70,7 +74,7 @@ class Align(enum.Enum):
     SPLIT_WITH_SIGN = '='
 
 
-class Sign(enum.Enum):
+class Sign(EnumFormatBase):
     """Determines sign options for number formatting. Available option descriptions:
 
     * **ALL** - Indicates that a sign should be used for **both positive and negative numbers**.
@@ -120,13 +124,13 @@ class Width(FormatBase):
         self.value = str(max(int(width), 0))
 
 
-class Groping(enum.Enum):
+class Groping(EnumFormatBase):
     """Determines separator for thousands. Available options:
 
     * **COMMA** - signals the use of a comma as a separator for thousands. For a locale aware separator, use the
       LOCALIZED_NUMBER integer presentation type instead.
 
-    * **UNDERSCORE** - Signals the use of an underscore as a separator for thousands for floating point presentation
+    * **UNDERSCORE** - signals the use of an underscore as a separator for thousands for floating point presentation
       types and for integer presentation type DECIMAL. For integer presentation types BINARY, OCTAL, HEXADECIMAL,
       and HEXADECIMAL_UPPER, underscores will be inserted every 4 digits. For other presentation types, specifying this
       option is an error.
@@ -151,7 +155,7 @@ class Precision(FormatBase):
         self.value = f'.{precision}'
 
 
-class Type(enum.Enum):
+class Type(EnumFormatBase):
     """Determines how the data should be presented.
 
     *String types:*
@@ -230,7 +234,7 @@ class Type(enum.Enum):
 ORDERED_FORMATS = (Fill, Align, Sign, Alternate, Width, Groping, Precision, Type)
 
 
-def sorted_formats(formats: Collection[FormatBase | enum.Enum]) -> list:
+def sorted_formats(formats: Collection[FormatBase | EnumFormatBase]) -> list:
     """Returns format types list sorted by the order specified in the string `formatting documentation
     <https://docs.python.org/3/library/string.html>`_.
 
