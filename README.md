@@ -199,7 +199,7 @@ To prevent this, we can use a conversion option of the `ValueFormatter` and a `C
 >>> vf = ValueFormatter(formats.Width(20), formats.Align.CENTER, formats.Fill('-'), conversion=formats.Conversion.STR)
 >>> lst = [1,2,3]
 >>> print(vf(lst))
-Out: '-----[1, 2, 3]------'
+Out: -----[1, 2, 3]------
 ```
 In the example above, the formatter converted a list to string with `str()` function - this is what `Conversion.STR` 
 stands for.
