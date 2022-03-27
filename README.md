@@ -108,10 +108,6 @@ options:
           percent sign.
 
 ## Usage
-
-### Getting started
-
-___
 #### Installation
 First, the lib must be installed with pip:
 ```
@@ -126,7 +122,6 @@ Import the `ValueFormatter` class and `formats` module:
 from clear_formatting import ValueFormatter, formats
 ```
 
-___
 #### The first formatting
 To basically format any value with this library, we'll need to create a `ValueFormatter` object with a list of formats
 to apply to the value. The formats themselves can be found in the [Formats](#formats) section of documentation above.
