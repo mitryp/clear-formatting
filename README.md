@@ -13,7 +13,7 @@ ValueFormatter must be initialized with a list of format classes. When initializ
 method `ValueFormatter.format(value)` can be used to format the value, as well as calling the ValueFormatter object with
 the value as argument.
 
-The class is using the default Python string formatting _(`str.format()` and curly braces)_ syntax to build a formatting
+The class uses the default Python string formatting _(`str.format()` and curly braces)_ syntax to build a formatting
 template from the given instances of the format classes.
 
 ## Formats
@@ -24,10 +24,10 @@ options:
 
 0) `FormatBase` | `EnumFormatBase` - base classes for non-enum and enum format classes, respectively.
 1) `Conversion` - format class that causes a type coercion (to string) before formatting. The only format class to be
-   used split from others. See the [Type conversion](#type-conversion) section for details.
+   used separately from others. See the [Type conversion](#type-conversion) section for details.
     * `STR` - converts the value to a string using *str()* method.
     * `REPR` - also converts the value to a string, but using *repr()* method.
-    * `ASCII` - converts the value to a string with ascii() method (leaves only ASCII characters).
+    * `ASCII` - converts the value to a string with *ascii()* method (leaves only ASCII characters).
 2) `Fill(char: str)` - determines the width fill character. The provided char will be used to replace the empty
    characters.
 3) `Align` - determines the alignment options. Has its effect only with Width format class.
@@ -48,8 +48,9 @@ options:
    the conversion to always contain a decimal-point character, even if no digits follow it. Normally, a decimal-point
    character appears in the result of these conversions only if a digit follows it. In addition, for `GENERAL`
    and `GENERAL_UPPER` conversions, trailing zeros are not removed from the result.
-7) `Width(width: int)` - determines the width (in characters) of the output string. Takes only positive integers. If the
-   negative number is specified, the width is set to 0. If the floating point number is specified, casts if to integer.
+6) `Width(width: int)` - determines the width (in characters) of the output string. Takes only positive integers. If the
+   negative number is specified, the width is set to 0. If the floating point number is specified, it is casted to 
+   integer.
 8) `Groping` - determines the separator for thousands.
     * `COMMA` - signals the use of a comma as a separator for thousands. For a locale aware separator, use the
       LOCALIZED_NUMBER integer presentation type instead.
@@ -114,7 +115,7 @@ First, the lib must be installed with pip:
 pip install clear-formatting
 ```
 
-The lib doesn't have any dependencies, so it'll install only one package.
+The lib doesn't have any dependencies, so the command above installs only one package.
 
 Import the `ValueFormatter` class and `formats` module:
 
@@ -123,8 +124,8 @@ from clear_formatting import ValueFormatter, formats
 ```
 
 #### The first formatting
-To basically format any value with this library, we'll need to create a `ValueFormatter` object with a list of formats
-to apply to the value. The formats themselves can be found in the [Formats](#formats) section of documentation above.
+To basically format any value with this library, create a `ValueFormatter` object with a list of formats to be applied 
+to the value. The formats themselves can be found in the [Formats](#formats) section of documentation above.
 
 Let's create a formatter that aligns the value at the center of the string with the length of 20, that filled with the
 dashes ' - ':
@@ -141,11 +142,11 @@ Out: -----its a test-----
 ```
 
 _The formats can be specified in any order and combinations, but duplicating formats is not allowed due to unpredictable
-behaviour._
+behaviour. Duplicating formats will raise a FormatDuplicateError._
 
 #### Changing the view
 
-Now let's try to convert an integer with the decimal notation to other notations.
+Type format class can be used to convert an integer with the decimal notation to other notations:
 
 ```python
 >>> dec = 31
@@ -160,8 +161,8 @@ Out: 1f  # 1F for HEXADECIMAL_UPPER
 ```
 
 #### More complexity
-Let me show you a little more complex example. Imagine you have to make a fixed-width column of integers, and, 
-moreover, to split the sign and the digits at the opposite sides of the column:
+There is more complex example below. Imagine you need to make a fixed-width column of integers, and, moreover, to place
+the sign and the digits at the opposite sides of the column. The code below illustrates the implementation of this task:
 
 ```python
 column_format = ValueFormatter(formats.Width(15), formats.Sign.ALL, formats.Align.SPLIT_WITH_SIGN)
@@ -182,7 +183,7 @@ Out:
 ```
 
 #### Type conversion
-Sometimes the value we need to format is not a string or a number. In that case regular formatting will cause an 
+Sometimes the value to format is not a string or a number. In that case the regular formatting will cause an 
 exception:
 
 ```python
@@ -194,7 +195,8 @@ Traceback (most recent call last):
 ...
 TypeError: unsupported format string passed to list.__format__
 ```
-To prevent this, we can use a conversion option of the `ValueFormatter` and a `Conversion` format class:
+To prevent this, a conversion option of the `ValueFormatter` and a `Conversion` format class can be used:
+
 ```python
 >>> vf = ValueFormatter(formats.Width(20), formats.Align.CENTER, formats.Fill('-'), conversion=formats.Conversion.STR)
 >>> lst = [1,2,3]
@@ -204,6 +206,6 @@ Out: -----[1, 2, 3]------
 In the example above, the formatter converted a list to string with `str()` function - this is what `Conversion.STR` 
 stands for.
 
-Other conversions:
+Other conversions supported:
 * `Conversion.REPR` - uses `repr()` function instead;
 * `Conversion.ASCII` - uses `ascii()` function instead.

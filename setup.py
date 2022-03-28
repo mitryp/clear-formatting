@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setuptools.setup(
     name='clear_formatting',
     packages=setuptools.find_packages(),
-    version='0.9.1',
+    version='0.9.2',
     license='Apache-2.0',
     description='A module providing a facade for clear formatting values into strings.',
     long_description=long_description,
@@ -14,7 +14,7 @@ setuptools.setup(
     author='Dmytro Popov',
     author_email='thedmitryp@ukr.net',
     url='https://github.com/MitryP/clear-formatting',
-    download_url='https://github.com/mitryp/clear-formatting/archive/refs/tags/0.9.1.tar.gz',
+    download_url='https://github.com/mitryp/clear-formatting/archive/refs/tags/0.9.2.tar.gz',
     keywords=['formatting', 'string', 'number', 'simplify', 'value-formatting', 'format', 'formatter', 'facade',
               'open-source'],
     install_requires=[],
