@@ -145,9 +145,9 @@ Out: -----its a test-----
 _The formats can be specified in any order and combinations, but duplicating formats is not allowed due to unpredictable
 behaviour. Duplicating formats will raise a FormatDuplicateError._
 
-#### Changing the view
+#### Changing the notation
 
-Type format class can be used to convert an integer with the decimal notation to other notations:
+Type format class can be used to convert an integer in decimal notation to other notations:
 
 ```python
 >>> dec = 31
@@ -162,8 +162,9 @@ Out: 1f  # 1F for HEXADECIMAL_UPPER
 ```
 
 #### More complexity
-There is more complex example below. Imagine you need to make a fixed-width column of integers, and, moreover, to place
-the sign and the digits at the opposite sides of the column. The code below illustrates the implementation of this task:
+There is a more complex example below. Imagine you need to make a fixed-width column of integers, and, moreover, to 
+place the sign and the digits at the opposite sides of the column. The code below illustrates the implementation of this
+task:
 
 ```python
 column_format = ValueFormatter(formats.Width(15), formats.Sign.ALL, formats.Align.SPLIT_WITH_SIGN)
