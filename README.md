@@ -127,14 +127,15 @@ from clear_formatting import ValueFormatter, formats
 To basically format any value with this library, create a `ValueFormatter` object with a list of formats to be applied 
 to the value. The formats themselves can be found in the [Formats](#formats) section of documentation above.
 
-Let's create a formatter that aligns the value at the center of the string with the length of 20, that filled with the
+Next, create a formatter object. 
+The example formatter below aligns the value to the center of the string with the length of 20, that is filled with
 dashes ' - ':
 
 ```python
 vf = ValueFormatter(formats.Align.CENTER, formats.Width(20), formats.Fill('-'))
 ```
 
-Now we can use the `vf` object to format any values we need:
+Now the `vf` object can be used to format any values:
 
 ```python
 >>> print(vf('its a test'))  # the same as vf.format('its a test')
@@ -203,7 +204,7 @@ To prevent this, a conversion option of the `ValueFormatter` and a `Conversion` 
 >>> print(vf(lst))
 Out: -----[1, 2, 3]------
 ```
-In the example above, the formatter converted a list to string with `str()` function - this is what `Conversion.STR` 
+In the example above, the formatter converts a list to string with `str()` function - this is what `Conversion.STR` 
 stands for.
 
 Other conversions supported:
