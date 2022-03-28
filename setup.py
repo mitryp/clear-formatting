@@ -8,7 +8,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     version='0.9.1',
     license='Apache-2.0',
-    description='Module that allows extracting valid date from user input.',
+    description='A module providing a facade for clear formatting values into strings.',
     long_description=long_description,
     long_description_content_type="text/markdown",
     author='Dmytro Popov',
