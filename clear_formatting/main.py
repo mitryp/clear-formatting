@@ -113,4 +113,4 @@ class ValueFormatter:
         return Formatter().format(options, value)
 
     def __repr__(self: 'ValueFormatter'):
-        return f'{self.__class__.__name__}({self.formats}, conversion={self.conversion})'
+        return f'{self.__class__.__name__}({self.formats}, conversion ={self.conversion})'
