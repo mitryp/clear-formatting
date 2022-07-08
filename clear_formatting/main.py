@@ -111,3 +111,6 @@ class ValueFormatter:
 
         options = ValueFormatter.build_format_template(formats, conversion)
         return Formatter().format(options, value)
+
+    def __repr__(self: 'ValueFormatter'):
+        return f'{self.__class__.__name__}({self.formats}, conversion={self.conversion})'

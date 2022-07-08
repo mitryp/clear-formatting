@@ -14,10 +14,15 @@ class FormatBase(abc.ABC):
     """An abstract base class for non-enum format types for `ValueFormatter` class."""
     value: str
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.value})'
+
 
 class EnumFormatBase(enum.Enum):
     """A base class for enum format types for `ValueFormatter` class."""
-    pass
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}.{self.name}'
 
 
 class Conversion(EnumFormatBase):
