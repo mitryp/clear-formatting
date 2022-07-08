@@ -3,9 +3,11 @@
 
 #  Copyright (c) 2022. Dmytro Popov
 
+from __future__ import annotations
+
 import abc
 import enum
-from typing import Collection
+from typing import Collection, Union
 
 
 class FormatBase(abc.ABC):
@@ -234,7 +236,7 @@ class Type(EnumFormatBase):
 ORDERED_FORMATS = (Fill, Align, Sign, Alternate, Width, Groping, Precision, Type)
 
 
-def sorted_formats(formats: Collection[FormatBase | EnumFormatBase]) -> list:
+def sorted_formats(formats: Collection[Union[FormatBase, EnumFormatBase]]) -> list:
     """Returns format types list sorted by the order specified in the string `formatting documentation
     <https://docs.python.org/3/library/string.html>`_.
 

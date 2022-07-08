@@ -3,8 +3,10 @@
 
 #  Copyright (c) 2022. Dmytro Popov
 
+from __future__ import annotations
+
 from string import Formatter
-from typing import Any
+from typing import Any, Optional, Tuple
 
 from clear_formatting.formats import *
 
@@ -34,10 +36,10 @@ class ValueFormatter:
     See the methods' documentation for other abilities.
     """
 
-    formats: tuple[FormatBase | EnumFormatBase]
-    conversion: Conversion | None
+    formats: Tuple[Union[FormatBase, EnumFormatBase]]
+    conversion: Optional[Conversion]
 
-    def __init__(self: 'ValueFormatter', *formats: FormatBase | EnumFormatBase, conversion: Conversion = None):
+    def __init__(self: 'ValueFormatter', *formats: Union[FormatBase, EnumFormatBase], conversion: Conversion = None):
         types = set()
         for fmt in formats:
             if type(fmt) not in ORDERED_FORMATS:
@@ -82,7 +84,7 @@ class ValueFormatter:
         return self.build_format_template(self.formats, self.conversion)
 
     @staticmethod
-    def build_format_template(formats: Collection[FormatBase | enum.Enum],
+    def build_format_template(formats: Collection[Union[FormatBase, enum.Enum]],
                               conversion: Conversion = None) -> str:
         """Returns a format template from the format options listed in 'formats' and, if provided, conversion option
         from 'conversion'.
@@ -96,7 +98,7 @@ class ValueFormatter:
         return f'{{{conversion_template}:{"".join(fmt.value for fmt in sorted_formats(formats))}}}'
 
     @staticmethod
-    def format_value(formats: Collection[FormatBase | enum.Enum], value: Any,
+    def format_value(formats: Collection[Union[FormatBase, enum.Enum]], value: Any,
                      conversion: Conversion = None) -> str:
         """Returns the given value formatted with the format options listed in 'formats' and, if provided, conversion
         option from 'conversion'.
